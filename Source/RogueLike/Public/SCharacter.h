@@ -21,10 +21,10 @@ public:
 	ASCharacter();
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	UInputAction* InputMoveForward;
+	UInputAction* InputMove;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	UInputAction* InputRotate;
+	UInputAction* InputLook;
 
 protected:
 	
@@ -44,9 +44,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void MoveForward(const FInputActionValue& Value);
+	void Move(const FInputActionValue& Value);
 	
-	void Rotate(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

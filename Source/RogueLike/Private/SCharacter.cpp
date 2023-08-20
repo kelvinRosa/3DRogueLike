@@ -27,7 +27,6 @@ ASCharacter::ASCharacter()
 void ASCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -36,17 +35,16 @@ void ASCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ASCharacter::MoveForward(const FInputActionValue& Value)
+void ASCharacter::Move(const FInputActionValue& Value)
 {
 	const FVector2D MoveValue = Value.Get<FVector2D>();
 	if (MoveValue.Y != 0.f)
 	{
 		AddMovementInput(GetActorForwardVector(), MoveValue.Y);
 	}
-	
 }
 
-void ASCharacter::Rotate(const FInputActionValue& Value)
+void ASCharacter::Look(const FInputActionValue& Value)
 {
 	const FVector2D LookValue = Value.Get<FVector2D>();
 	
@@ -77,8 +75,8 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	// Get the EnhancedInputComponent
 	UEnhancedInputComponent* PEI = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	
-	PEI->BindAction(InputMoveForward, ETriggerEvent::Triggered, this, &ASCharacter::MoveForward);
-	PEI->BindAction(InputRotate, ETriggerEvent::Triggered, this, &ASCharacter::Rotate);
+	PEI->BindAction(InputMove, ETriggerEvent::Triggered, this, &ASCharacter::Move);
+	PEI->BindAction(InputLook, ETriggerEvent::Triggered, this, &ASCharacter::Look);
 	
 }
 
