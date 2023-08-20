@@ -6,8 +6,10 @@
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
 
+struct FInputActionValue;
 class UCameraComponent;
 class USpringArmComponent;
+class UInputAction;
 
 UCLASS()
 class ROGUELIKE_API ASCharacter : public ACharacter
@@ -17,6 +19,12 @@ class ROGUELIKE_API ASCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ASCharacter();
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UInputAction* InputMoveForward;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UInputAction* InputRotate;
 
 protected:
 	
@@ -36,8 +44,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void MoveForward(float Value);
+	void MoveForward(const FInputActionValue& Value);
 	
+	void Rotate(const FInputActionValue& Value);
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };

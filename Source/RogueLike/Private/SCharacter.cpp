@@ -6,6 +6,8 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "EnhancedInput/Public/EnhancedInputComponent.h"
+
 
 
 // Sets default values
@@ -34,9 +36,29 @@ void ASCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ASCharacter::MoveForward(float Value)
+void ASCharacter::MoveForward(const FInputActionValue& Value)
 {
-	AddMovementInput(GetActorForwardVector(), Value);
+	const FVector2D MoveValue = Value.Get<FVector2D>();
+	if (MoveValue.Y != 0.f)
+	{
+		AddMovementInput(GetActorForwardVector(), MoveValue.Y);
+	}
+	
+}
+
+void ASCharacter::Rotate(const FInputActionValue& Value)
+{
+	const FVector2D LookValue = Value.Get<FVector2D>();
+	
+	if (LookValue.X != 0.f)
+	{
+		AddControllerYawInput(LookValue.X);
+	}
+ 
+	if (LookValue.Y != 0.f)
+	{
+		AddControllerPitchInput(LookValue.Y);
+	}
 }
 
 // Called to bind functionality to input
@@ -52,5 +74,11 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	Subsystem->ClearAllMappings();
 	Subsystem->AddMappingContext(InputMapping, 0);
 
+	// Get the EnhancedInputComponent
+	UEnhancedInputComponent* PEI = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	
+	PEI->BindAction(InputMoveForward, ETriggerEvent::Triggered, this, &ASCharacter::MoveForward);
+	PEI->BindAction(InputRotate, ETriggerEvent::Triggered, this, &ASCharacter::Rotate);
+	
 }
 
